@@ -1,11 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 class CustomUser(AbstractUser):
-    email = models.CharField(unique=True)
+    class Roles(models.TextChoices):
+        ADMIN = 'admin', 'Админ'
+        MANAGER = 'manager', 'Менеджер'
+        
+    role = models.CharField(max_length=20, choices=Roles.choices, default=Roles.MANAGER)
     
-    REQUIRED_FIELDS = ['email']
-    USERNAME_FIELD = 'username'
+    def is_admin(self):
+        return self.role == self.Roles.ADMIN or self.is_superuser
     
-    def __str__(self):
-        return self.username
+    def is_manager(self):
+        return self.role == self.Roles.MANAGER
