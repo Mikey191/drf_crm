@@ -19,3 +19,4 @@ class CustomUserAdmin(UserAdmin):
     )
     search_fields = ('username', 'email')
     ordering = ('id',)
+    
